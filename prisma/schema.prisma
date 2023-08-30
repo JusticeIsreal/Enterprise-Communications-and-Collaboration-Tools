@@ -1,0 +1,98 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+// SCHEMA FOR USER 
+model Profile{
+  id String @id @default(uuid())
+  userId String @unique
+  name String 
+  imageUrl String @db.Text 
+  email String @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // link to server reference
+  servers Server[]
+
+  // link to membership reference
+  members Member[]
+
+  // link to channel reference
+  channels Channel[]
+}
+
+
+// SCHEMA FOR GROUPS
+model Server{
+  id String @id @default(uuid())
+  name String
+  imageUrl String @db.Text 
+  inviteCode String @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+// create reference to who did the operation
+  profileId String 
+  profile Profile @relation(fields:[profileId],references: [id],onDelete: Cascade)
+  @@index([profileId])
+// create reference to it members
+  members Member[]
+  channels Channel[]
+
+ 
+}
+
+// SCHEMA FOR MEMBERSHIP
+enum MemberRole{
+  ADMIN
+  MODERATOR
+  GUEST
+}
+
+model Member {
+  id String @id @default(uuid())
+  role MemberRole @default(GUEST)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // create reference to user
+  profileId String
+  profile Profile @relation(fields:[profileId], references: [id],onDelete: Cascade)
+  @@index([profileId])
+// create reference to server
+  serverId String
+  server Server @relation(fields:[serverId],references: [id],onDelete:Cascade)
+ 
+  @@index([serverId])
+}
+
+// SCHEMA FOR CHANELS
+enum ChannelType{
+  TEXT
+  AUDIO
+  VIDEO
+}
+
+model Channel{
+  id String @id @default(uuid())
+  name String
+  tyoe ChannelType @default(TEXT)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+// create reference to user
+  profileId String
+  profile Profile @relation(fields:[profileId], references: [id],onDelete: Cascade)
+  @@index([profileId])
+  // create reference to server
+  serverId String
+  server Server @relation(fields:[serverId], references: [id], onDelete: Cascade)
+  @@index([serverId])
+}
