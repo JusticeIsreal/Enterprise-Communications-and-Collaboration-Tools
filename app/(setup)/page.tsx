@@ -1,13 +1,13 @@
-import { ModeToggle } from "@/components/mode-toggle";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { initialProfile } from "@/lib/initial-profile";
-import { UserButton } from "@clerk/nextjs";
-import Image from "next/image";
+import InitialModal from "@/components/modals/InitialModal";
 
 const Page = async () => {
+  // GET USEER PROFILE DETAILS
   const profile = await initialProfile();
 
+  // FIND SERVER USER BELONGS
   const server = await db.server.findFirst({
     where: {
       members: {
@@ -18,9 +18,11 @@ const Page = async () => {
     },
   });
 
+  // IF SERVERS ARE AVALIABLE ROUTE TO SERVER
   if (server) {
     return redirect(`/servers/${server.id}`);
   }
-  return <div>hello world</div>;
+  // CREATE SERVER MODAL
+  return <InitialModal />;
 };
 export default Page;
