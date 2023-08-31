@@ -67,9 +67,9 @@ function InitialModal() {
                     <FormItem>
                       <FormControl>
                         <FileUpload
-                          endpoint="serverImage"
-                          value={field.value}
-                          onChange={field.onChange}
+                          // endpoint="serverImage"
+                          // value={field.value}
+                          // onChange={field.onChange}
                         />
                       </FormControl>
                     </FormItem>
