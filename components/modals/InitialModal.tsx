@@ -1,8 +1,8 @@
 "use client";
 import { useDisclosure } from "@mantine/hooks";
 import { Modal, Group } from "@mantine/core";
-
-import React from "react";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import React, { useState } from "react";
 
 import {
   Dialog,
@@ -26,6 +26,8 @@ import {
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import FileUpload from "../FileUpload";
+
+// FORM SCHEMA -
 const formSchema = z.object({
   name: z.string().min(1, { message: "Server name is required" }),
   imageUrl: z.string().min(1, { message: "Server image is required" }),
@@ -33,7 +35,8 @@ const formSchema = z.object({
 
 function InitialModal() {
   const [opened, { open, close }] = useDisclosure(true);
-
+  const [imageUrlState, setImageUrlState] = useState<any>();
+  const [imageReview, setImageReview] = useState<any>("");
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -46,31 +49,24 @@ function InitialModal() {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     console.log(values);
   };
+
   return (
     <>
       <Modal opened={opened} onClose={close} title="Create server" centered>
         <div className="text-2xl text-center font-bold">
           Customize your server
         </div>
-        <div className="text-center text-zinc-500">
-          Give your server a personality with a name an image. You can akways
-          hange it later
-        </div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <div className="space-y-8 px-6">
-              <div className="flex items-center justify-center text-center">
+              <div className="flex items-center justify-center text-center relative">
                 <FormField
                   control={form.control}
                   name="imageUrl"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <FileUpload
-                          // endpoint="serverImage"
-                          // value={field.value}
-                          // onChange={field.onChange}
-                        />
+                        <FileUpload setImageReview={setImageReview} />
                       </FormControl>
                     </FormItem>
                   )}
