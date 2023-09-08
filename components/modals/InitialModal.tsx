@@ -49,7 +49,7 @@ function InitialModal() {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     console.log(values);
   };
-
+// ///
   return (
     <>
       <Modal opened={opened} onClose={close} title="Create server" centered>
