@@ -34,6 +34,10 @@ const formSchema = z.object({
 });
 
 function InitialModal() {
+  // GET IMAGE URL DATA STATE TO RENDER FILE INPUT
+  const [imageFile, setImageFile] = useState<any>();
+  const [imageFileUrl, setImageFileUrl] = useState<string>("");
+
   const [opened, { open, close }] = useDisclosure(true);
   const [imageUrlState, setImageUrlState] = useState<any>();
   const [imageReview, setImageReview] = useState<any>("");
@@ -47,9 +51,10 @@ function InitialModal() {
 
   const isLoading = form.formState.isSubmitting;
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    console.log(values); // This will log the form values
   };
-// /////
+
+ 
   return (
     <>
       <Modal opened={opened} onClose={close} title="Create server" centered>
@@ -66,7 +71,13 @@ function InitialModal() {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <FileUpload setImageReview={setImageReview} />
+                        <FileUpload
+                          setImageFileUrl={setImageFileUrl}
+                          imageFileUrl={imageFileUrl}
+                          setImageFile={setImageFile}
+                          imageFile={imageFile}
+                          setImageReview={setImageReview}
+                        />
                       </FormControl>
                     </FormItem>
                   )}
@@ -94,7 +105,7 @@ function InitialModal() {
               ></FormField>
             </div>
             <DialogFooter className="bg-gray-100 px-6 py-4">
-              <Button variant="primary" disabled={isLoading}>
+              <Button variant="primary"  type="submit">
                 Create
               </Button>
             </DialogFooter>

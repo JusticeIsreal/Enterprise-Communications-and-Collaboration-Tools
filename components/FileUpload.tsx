@@ -9,13 +9,20 @@ import Image from "next/image";
 import { RiDeleteBin6Line } from "react-icons/ri";
 interface FileUploadProps extends Partial<DropzoneProps> {
   setImageReview: (image: any) => void;
+  imageFileUrl: string;
+  setImageFileUrl: (value: string) => void;
+  imageFile: any;
+  setImageFile: (value: any) => void;
 }
 
-function FileUpload({ setImageReview, ...props }: FileUploadProps) {
-  // STATE TO RENDER FILE INPUT
-  const [imageFile, setImageFile] = useState<any>();
-  const [imageFileUrl, setImageFileUrl] = useState<string>("");
-
+function FileUpload({
+  imageFile,
+  setImageFile,
+  imageFileUrl,
+  setImageFileUrl,
+  setImageReview,
+  ...props
+}: FileUploadProps) {
   // USEEFFECT TO MAKE A POST REQUEST TO CLOUDINARY STORAGE AND RETURN STRING
   useEffect(() => {
     if (imageFile) {
@@ -50,7 +57,7 @@ function FileUpload({ setImageReview, ...props }: FileUploadProps) {
   return (
     <main>
       {imageFileUrl && (
-        <div onClick={() => handleDeleteImage()}>
+        <div onClick={() => handleDeleteImage()} className="cursor-pointer">
           <RiDeleteBin6Line className="text-red-500 absolute top-0 z-30 right-0 text-[30px] bg-white" />
         </div>
       )}
