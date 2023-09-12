@@ -109,7 +109,9 @@ function FileUpload({
           )}
           <div>
             <Text size="xl" inline>
-              Drag images here or click to select files
+              {imageFileUrl
+                ? " Please wait Server image Loading ..."
+                : "Drag images here or click to select files "}
             </Text>
           </div>
         </Group>
