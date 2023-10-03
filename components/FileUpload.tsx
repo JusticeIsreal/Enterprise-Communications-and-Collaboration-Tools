@@ -14,7 +14,7 @@ interface FileUploadProps extends Partial<DropzoneProps> {
   imageFile: any;
   setImageFile: (value: any) => void;
 }
-
+// MM
 function FileUpload({
   imageFile,
   setImageFile,
